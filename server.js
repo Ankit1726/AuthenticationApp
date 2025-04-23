@@ -27,6 +27,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Database Connection
+mongoose
+  .connect(
+    "mongodb+srv://ankitguptaag0650960:UBwAjh6snPgojvFs@cluster0.zkdjliz.mongodb.net/",
+    {
+      DbName: "Auth_Database",
+    }
+  )
+  .then(() => console.log("Mongo DB Connected"))
+  .catch((err) => {
+    console.log(err);
+  });
+
+
 //  show register ejs
 app.get("/register", (req, res) => {
   res.render("register.ejs");
@@ -59,7 +73,7 @@ app.post("/register", upload.single("file"), async (req, res) => {
       password,
     });
 
-    res.redirect("/");
+    res.redirect("/");  // redirecting to Home Page
 
     console.log(cloudinaryRes, name, email, password);
   } catch (error) {
@@ -90,18 +104,6 @@ app.get("/users", async (req, res) => {
   res.render("users.ejs", { users });
 });
 
-// Database Connection
-mongoose
-  .connect(
-    "mongodb+srv://ankitguptaag0650960:UBwAjh6snPgojvFs@cluster0.zkdjliz.mongodb.net/",
-    {
-      DbName: "Auth_Database",
-    }
-  )
-  .then(() => console.log("Mongo DB Connected"))
-  .catch((err) => {
-    console.log(err);
-  });
 
 const port = 3000;
 app.listen(port, () => {
